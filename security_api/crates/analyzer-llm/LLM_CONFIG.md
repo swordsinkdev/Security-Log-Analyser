@@ -65,6 +65,17 @@ LLM_MAX_TOKENS=4096
 GROQ_API_KEY=gsk_your-groq-api-key-here
 ```
 
+### Using Google Gemini
+
+```env
+# Gemini Configuration
+LLM_PROVIDER=gemini
+LLM_MODEL=gemini-1.5-flash
+LLM_TEMPERATURE=0.3
+LLM_MAX_TOKENS=4096
+GEMINI_API_KEY=your-gemini-api-key-here
+```
+
 ## Available Models
 
 ### OpenAI Models
@@ -90,6 +101,14 @@ GROQ_API_KEY=gsk_your-groq-api-key-here
 | `llama-3.1-70b-versatile` | Llama 3.1 70B | Best accuracy (default) |
 | `llama-3.1-8b-instant` | Llama 3.1 8B | Ultra-fast responses |
 | `mixtral-8x7b-32768` | Mixtral 8x7B | Large context |
+
+### Gemini Models
+
+| Model | Description | Best For |
+|-------|-------------|----------|
+| `gemini-1.5-flash` | Gemini 1.5 Flash | Fast, cost-effective (default) |
+| `gemini-1.5-pro` | Gemini 1.5 Pro | Best accuracy, larger context |
+| `gemini-2.0-flash-exp` | Gemini 2.0 Flash (Experimental) | Latest experimental features |
 
 ## Switching Providers
 

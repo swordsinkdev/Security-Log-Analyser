@@ -72,6 +72,7 @@ pub struct ThreatStats {
 pub struct ThreatCVSS {
     pub threat_type: String,
     pub count: usize,
+    #[serde(rename = "base_score")]
     pub cvss_score: f32,
     pub severity: String,
     pub vector_string: String,

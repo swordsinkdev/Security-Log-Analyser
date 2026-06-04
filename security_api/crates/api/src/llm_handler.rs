@@ -30,8 +30,9 @@ pub async fn analyze_logs_with_llm(
 ) -> impl IntoResponse {
     let mut content = String::new();
     let mut filename = String::from("unknown");
+    let mut provider_override: Option<String> = None;
 
-    // Extract file from multipart form
+    // Extract file and optional provider from multipart form
     while let Some(field) = multipart.next_field().await.unwrap_or(None) {
         let name = field.name().unwrap_or("").to_string();
 
@@ -47,6 +48,11 @@ pub async fn analyze_logs_with_llm(
                     }));
                 }
             }
+        } else if name == "provider" {
+            // User-selected provider override
+            if let Ok(data) = field.bytes().await {
+                provider_override = Some(String::from_utf8_lossy(&data).to_string());
+            }
         }
     }
 
@@ -56,27 +62,58 @@ pub async fn analyze_logs_with_llm(
         }));
     }
 
-    // Create the LLM analyzer from environment configuration
-    let analyzer = match LlmAnalyzer::from_env() {
-        Ok(a) => a,
-        Err(e) => {
-            let suggestion = get_error_suggestion(&e);
-            eprintln!("❌ LLM Analyzer configuration error: {}", e);
-            return Json(serde_json::json!({
-                "error": format!("LLM configuration error: {}", e),
-                "suggestion": suggestion
-            }));
+    // Create the LLM analyzer from environment configuration or user override
+    let analyzer = if let Some(provider) = provider_override {
+        // Temporarily set LLM_PROVIDER env var for this request
+        // SAFETY: This is safe because we're only modifying the environment for this process
+        // and the analyzer will read it immediately after
+        unsafe {
+            std::env::set_var("LLM_PROVIDER", &provider);
+            
+            // Set appropriate model for each provider
+            match provider.as_str() {
+                "groq" => std::env::set_var("LLM_MODEL", "llama-3.3-70b-versatile"),
+                "gemini" => std::env::set_var("LLM_MODEL", "gemini-3-flash-preview"),
+                "openai" => std::env::set_var("LLM_MODEL", "gpt-4o"),
+                "anthropic" => std::env::set_var("LLM_MODEL", "claude-sonnet-4-20250514"),
+                _ => {}
+            }
+        }
+        println!("[INFO] User selected provider: {}", provider);
+        match LlmAnalyzer::from_env() {
+            Ok(a) => a,
+            Err(e) => {
+                let suggestion = get_error_suggestion(&e);
+                eprintln!("[ERROR] LLM Analyzer configuration error: {}", e);
+                return Json(serde_json::json!({
+                    "error": format!("LLM configuration error: {}", e),
+                    "suggestion": suggestion
+                }));
+            }
+        }
+    } else {
+        // Use default environment configuration
+        match LlmAnalyzer::from_env() {
+            Ok(a) => a,
+            Err(e) => {
+                let suggestion = get_error_suggestion(&e);
+                eprintln!("[ERROR] LLM Analyzer configuration error: {}", e);
+                return Json(serde_json::json!({
+                    "error": format!("LLM configuration error: {}", e),
+                    "suggestion": suggestion
+                }));
+            }
         }
     };
 
     println!(
-        "🤖 Processing log file with {} ({}): {}",
+        "[INFO] Processing log file with {} ({}): {}",
         analyzer.provider(),
         analyzer.model(),
         filename
     );
 
-    // Parse Apache logs
+    // Parse logs with unified parser (supports Apache, generic, and any text format)
     let mut logs = Vec::new();
     let mut parse_errors = 0;
 
@@ -85,22 +122,59 @@ pub async fn analyze_logs_with_llm(
             continue;
         }
 
+        // Try Apache format first, fall back to generic parsing
         match parse_apache_combined(line) {
             Ok(log) => logs.push(log),
-            Err(_) => parse_errors += 1,
+            Err(_) => {
+                // Use generic parser to convert any log format to Apache-like structure
+                if let Some(entry) = security_common::parsers::parse_log_line_unified(line) {
+                    // Convert generic LogEntry to ApacheLog for LLM analysis
+                    use security_common::parsers::apache::ApacheLog;
+                    use chrono::Utc;
+                    
+                    let apache_log = ApacheLog {
+                        ip: entry.ip_address.clone().unwrap_or_else(|| "unknown".to_string()),
+                        timestamp: Utc::now(), // Use current time as fallback
+                        method: "GENERIC".to_string(),
+                        path: entry.message.clone(),
+                        protocol: "LOG/1.0".to_string(),
+                        status: match entry.level.as_str() {
+                            "CRITICAL" => 500,
+                            "ERROR" => 400,
+                            "WARN" => 300,
+                            _ => 200,
+                        },
+                        size: 0,
+                        referer: "-".to_string(),
+                        user_agent: entry.username.clone().unwrap_or_else(|| "-".to_string()),
+                        is_suspicious: entry.level == "ERROR" || entry.level == "CRITICAL",
+                        threat_type: if entry.level == "CRITICAL" {
+                            Some("Critical Alert".to_string())
+                        } else if entry.level == "ERROR" {
+                            Some("Error Event".to_string())
+                        } else {
+                            None
+                        },
+                        severity: Some(entry.level.clone()),
+                    };
+                    logs.push(apache_log);
+                } else {
+                    parse_errors += 1;
+                }
+            }
         }
     }
 
     if logs.is_empty() {
         return Json(serde_json::json!({
-            "error": "No valid Apache logs found in the uploaded file",
+            "error": "No valid logs found in the uploaded file",
             "parse_errors": parse_errors,
-            "suggestion": "Ensure the file contains Apache combined log format entries"
+            "suggestion": "Ensure the file contains log entries with timestamps and messages"
         }));
     }
 
     println!(
-        "📊 Parsed {} logs ({} parse errors), sending to LLM...",
+        "[INFO] Parsed {} logs ({} parse errors), sending to LLM...",
         logs.len(),
         parse_errors
     );
@@ -110,7 +184,7 @@ pub async fn analyze_logs_with_llm(
         Ok(report) => report,
         Err(e) => {
             let suggestion = get_error_suggestion(&e);
-            eprintln!("❌ LLM analysis failed: {}", e);
+            eprintln!("[ERROR] LLM analysis failed: {}", e);
             return Json(serde_json::json!({
                 "error": format!("AI analysis failed: {}", e),
                 "suggestion": suggestion,

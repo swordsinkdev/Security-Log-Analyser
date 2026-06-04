@@ -1,0 +1,65 @@
+2024-01-12 14:30:00 [INFO] 10.0.0.50 - Application server started successfully
+2024-01-12 14:30:15 [INFO] 192.168.1.100 - User authentication: user=alice, role=admin, session_id=a1b2c3d4
+2024-01-12 14:30:30 [INFO] 192.168.1.100 - Dashboard access: user=alice, page=/admin/dashboard
+2024-01-12 14:31:00 [WARN] 203.0.113.45 - Unusual login pattern detected from new geographic location
+2024-01-12 14:31:05 [ERROR] 203.0.113.45 - Failed login attempt: user=admin, password_hash=incorrect, attempt=1/5
+2024-01-12 14:31:10 [ERROR] 203.0.113.45 - Failed login attempt: user=admin, password_hash=incorrect, attempt=2/5
+2024-01-12 14:31:15 [ERROR] 203.0.113.45 - Failed login attempt: user=administrator, password_hash=incorrect, attempt=3/5
+2024-01-12 14:31:20 [ERROR] 203.0.113.45 - Failed login attempt: user=root, password_hash=incorrect, attempt=4/5
+2024-01-12 14:31:25 [ERROR] 203.0.113.45 - Failed login attempt: user=sysadmin, password_hash=incorrect, attempt=5/5
+2024-01-12 14:31:30 [CRITICAL] 203.0.113.45 - Account lockout triggered: Brute force attack detected, IP blocked for 1 hour
+2024-01-12 14:32:00 [WARN] 198.51.100.23 - Suspicious HTTP request: User-Agent contains SQL keywords
+2024-01-12 14:32:05 [CRITICAL] 198.51.100.23 - SQL Injection attempt in search parameter: query="' OR '1'='1' UNION SELECT username,password,email FROM users--"
+2024-01-12 14:32:10 [CRITICAL] 198.51.100.23 - SQL Injection escalation: Attempting to extract database schema with INFORMATION_SCHEMA queries
+2024-01-12 14:32:15 [CRITICAL] 198.51.100.23 - SQL Injection: Time-based blind SQLi detected: query="admin' AND SLEEP(5)--"
+2024-01-12 14:32:20 [ERROR] 198.51.100.23 - Database connection spike: 50 concurrent connections from single IP
+2024-01-12 14:32:25 [CRITICAL] 198.51.100.23 - Data exfiltration attempt: Large SELECT query targeting customer_data table
+2024-01-12 14:32:30 [CRITICAL] WAF Alert: SQL Injection attack chain detected, 6 malicious requests in 30 seconds
+2024-01-12 14:33:00 [INFO] 10.0.0.75 - Normal user activity: user=bob, action=view_reports
+2024-01-12 14:33:30 [WARN] 192.168.1.200 - Privilege escalation attempt: Standard user requesting admin API endpoint
+2024-01-12 14:33:35 [ERROR] 192.168.1.200 - Unauthorized access attempt: user=bob attempting to access /admin/users endpoint
+2024-01-12 14:33:40 [ERROR] 192.168.1.200 - Authorization bypass attempt: Manipulated JWT token detected
+2024-01-12 14:33:45 [CRITICAL] 192.168.1.200 - Root access attempt: user=bob, command="sudo su -", result=denied
+2024-01-12 14:33:50 [CRITICAL] 192.168.1.200 - Suspicious file access: /etc/passwd read attempt by non-privileged user
+2024-01-12 14:33:55 [CRITICAL] 192.168.1.200 - Suspicious file access: /etc/shadow access denied, multiple retry attempts
+2024-01-12 14:34:00 [WARN] 192.168.1.200 - SSH key enumeration: Scanning .ssh directories across multiple user accounts
+2024-01-12 14:34:05 [ERROR] 192.168.1.200 - Lateral movement detected: Attempting to access other user home directories
+2024-01-12 14:34:30 [INFO] 10.0.0.100 - Scheduled backup job started
+2024-01-12 14:35:00 [WARN] 198.51.100.88 - Unusual outbound connection: Connecting to known C2 server IP 185.220.101.45
+2024-01-12 14:35:05 [CRITICAL] 198.51.100.88 - Malware signature match: File hash matches known ransomware variant (SHA256: a3f5b...)
+2024-01-12 14:35:10 [CRITICAL] 198.51.100.88 - Ransomware behavior detected: Mass file encryption in /var/www/uploads directory
+2024-01-12 14:35:15 [CRITICAL] 198.51.100.88 - Malicious process: cryptolocker.exe spawned, attempting to encrypt files
+2024-01-12 14:35:20 [CRITICAL] 198.51.100.88 - Data destruction attempt: Deleting shadow copies and backup files
+2024-01-12 14:35:25 [CRITICAL] 198.51.100.88 - Trojan communication: Beaconing to external IP every 60 seconds
+2024-01-12 14:35:30 [ERROR] 198.51.100.88 - Virus scanner alert: Multiple infected files quarantined
+2024-01-12 14:35:35 [CRITICAL] INCIDENT: Active ransomware infection detected on web server, initiating containment
+2024-01-12 14:36:00 [WARN] 192.168.1.150 - Network reconnaissance: ICMP sweep across internal subnet
+2024-01-12 14:36:05 [WARN] 192.168.1.150 - Port scanning detected: nmap -sS -p- targeting 10.0.0.0/24
+2024-01-12 14:36:10 [WARN] 192.168.1.150 - Service enumeration: Banner grabbing on ports 22, 80, 443, 3306, 5432, 27017
+2024-01-12 14:36:15 [WARN] 192.168.1.150 - Vulnerability scanning: Automated exploit framework detected (Metasploit signatures)
+2024-01-12 14:36:20 [ERROR] 192.168.1.150 - Exploit attempt: CVE-2021-44228 Log4Shell payload detected in HTTP headers
+2024-01-12 14:36:25 [CRITICAL] 192.168.1.150 - Remote code execution attempt: Malicious JNDI lookup in User-Agent header
+2024-01-12 14:36:30 [CRITICAL] Attack chain identified: Reconnaissance → Exploitation → Lateral Movement
+2024-01-12 14:37:00 [INFO] 10.0.0.125 - User session: user=charlie, activity=normal
+2024-01-12 14:37:30 [ERROR] 203.0.113.45 - Credential stuffing attack: Testing 1000+ username/password combinations
+2024-01-12 14:37:35 [ERROR] 203.0.113.45 - Password spraying detected: Single password tested against multiple accounts
+2024-01-12 14:37:40 [WARN] 203.0.113.45 - Account enumeration: Probing for valid usernames via timing attacks
+2024-01-12 14:38:00 [CRITICAL] 198.51.100.23 - Advanced SQL Injection: Second-order SQLi via stored XSS payload
+2024-01-12 14:38:05 [CRITICAL] 198.51.100.23 - Database privilege escalation: Attempting to execute xp_cmdshell
+2024-01-12 14:38:10 [CRITICAL] 198.51.100.23 - SQL Injection: File write attempt via INTO OUTFILE to web directory
+2024-01-12 14:38:30 [WARN] 192.168.1.200 - Suspicious file modification: /var/www/html/config.php altered
+2024-01-12 14:38:35 [ERROR] 192.168.1.200 - Web shell detected: Malicious PHP file uploaded to /uploads/shell.php
+2024-01-12 14:38:40 [CRITICAL] 192.168.1.200 - Remote code execution: Web shell executing system commands
+2024-01-12 14:39:00 [CRITICAL] 198.51.100.88 - Persistence mechanism: Malware created scheduled task for auto-start
+2024-01-12 14:39:05 [CRITICAL] 198.51.100.88 - Registry modification: Malware added Run key for persistence
+2024-01-12 14:39:10 [WARN] 198.51.100.88 - Suspicious DNS queries: Querying DGA (Domain Generation Algorithm) domains
+2024-01-12 14:39:30 [ERROR] Multiple IPs - Distributed attack pattern: Coordinated attack from 5+ IP addresses
+2024-01-12 14:39:35 [CRITICAL] Threat intelligence match: IPs associated with known APT group "FancyBear"
+2024-01-12 14:40:00 [CRITICAL] SECURITY INCIDENT: Multi-stage attack in progress
+2024-01-12 14:40:05 [CRITICAL] Attack timeline: Initial access (14:31) → Privilege escalation (14:33) → Malware deployment (14:35) → Data exfiltration (14:38)
+2024-01-12 14:40:10 [CRITICAL] Indicators of Compromise (IOCs): 8 malicious IPs, 3 file hashes, 2 domains
+2024-01-12 14:40:15 [CRITICAL] MITRE ATT&CK mapping: T1190 (Exploit Public-Facing App), T1078 (Valid Accounts), T1486 (Data Encrypted for Impact)
+2024-01-12 14:40:20 [ERROR] Data loss prevention: Attempted exfiltration of 2.5GB customer database blocked
+2024-01-12 14:40:25 [CRITICAL] Recommended actions: Isolate affected systems, reset credentials, restore from backup, engage incident response team
+2024-01-12 14:40:30 [INFO] Security team notified: Incident #2024-0112-001 created
+2024-01-12 14:40:35 [CRITICAL] Severity assessment: CRITICAL - Active breach with ransomware deployment and data exfiltration attempts

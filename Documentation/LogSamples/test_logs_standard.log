@@ -1,0 +1,50 @@
+2024-01-12 10:15:23 [INFO] Server started on port 8080
+2024-01-12 10:15:45 [INFO] 192.168.1.100 - User login successful: user=john
+2024-01-12 10:16:12 [ERROR] 203.0.113.45 - Failed login attempt: user=admin
+2024-01-12 10:16:18 [ERROR] 203.0.113.45 - Failed login attempt: user=root
+2024-01-12 10:16:25 [ERROR] 203.0.113.45 - Failed login attempt: user=administrator
+2024-01-12 10:16:32 [ERROR] 203.0.113.45 - Failed login attempt: user=admin
+2024-01-12 10:16:40 [ERROR] 203.0.113.45 - Failed login attempt: user=root
+2024-01-12 10:17:05 [WARN] 198.51.100.23 - Multiple failed attempts detected from IP
+2024-01-12 10:17:22 [CRITICAL] 198.51.100.23 - SQL Injection attempt detected: SELECT * FROM users WHERE id='1' OR '1'='1'
+2024-01-12 10:17:35 [CRITICAL] 198.51.100.23 - SQL Injection attempt: ' UNION SELECT username, password FROM admin_users--
+2024-01-12 10:17:48 [CRITICAL] 198.51.100.23 - SQL Injection detected: '; DROP TABLE users; --
+2024-01-12 10:18:12 [ERROR] 192.168.1.200 - Unauthorized access attempt: user: root
+2024-01-12 10:18:25 [ERROR] 192.168.1.200 - Root access denied: user: root
+2024-01-12 10:18:40 [WARN] 192.168.1.200 - Suspicious file access attempt: /etc/passwd
+2024-01-12 10:18:55 [WARN] 192.168.1.200 - Suspicious file access: /etc/shadow
+2024-01-12 10:19:10 [INFO] 10.0.0.50 - Normal user activity: user=alice
+2024-01-12 10:19:25 [ERROR] 203.0.113.45 - Failed login: user=admin password=incorrect
+2024-01-12 10:19:40 [ERROR] 203.0.113.45 - Failed login: user=root password=12345
+2024-01-12 10:20:05 [CRITICAL] 198.51.100.88 - Malware signature detected: trojan.generic.exe
+2024-01-12 10:20:18 [CRITICAL] 198.51.100.88 - Malware detected: ransomware activity on /var/www
+2024-01-12 10:20:35 [WARN] 192.168.1.150 - Port scan detected from nmap: ports 22,80,443,3306
+2024-01-12 10:20:50 [WARN] 192.168.1.150 - Port scanning activity: sequential port probing
+2024-01-12 10:21:10 [INFO] 10.0.0.75 - User logout: user=bob
+2024-01-12 10:21:25 [ERROR] 203.0.113.45 - Failed login: user=admin
+2024-01-12 10:21:40 [ERROR] 203.0.113.45 - Failed login: user=root
+2024-01-12 10:22:00 [CRITICAL] 198.51.100.23 - SQL Injection: SELECT password FROM users WHERE username='admin'--
+2024-01-12 10:22:15 [CRITICAL] 198.51.100.23 - Command injection attempt detected
+2024-01-12 10:22:30 [WARN] 192.168.1.200 - Suspicious file: /etc/passwd accessed
+2024-01-12 10:22:45 [ERROR] 192.168.1.200 - Unauthorized root access attempt
+2024-01-12 10:23:00 [INFO] 10.0.0.100 - Normal request processed
+2024-01-12 10:23:15 [ERROR] 203.0.113.45 - Failed login: user=admin
+2024-01-12 10:23:30 [CRITICAL] 198.51.100.88 - Virus detected: malicious.payload.bin
+2024-01-12 10:23:45 [WARN] 192.168.1.150 - Port scan: nmap -sS target
+2024-01-12 10:24:00 [CRITICAL] 198.51.100.23 - SQL Injection: ' OR 1=1--
+2024-01-12 10:24:15 [INFO] 10.0.0.125 - User session created: user=charlie
+2024-01-12 10:24:30 [ERROR] 203.0.113.45 - Failed login attempt: user=administrator
+2024-01-12 10:24:45 [CRITICAL] System alert: Multiple critical threats detected
+2024-01-12 10:25:00 [CRITICAL] Security breach attempt in progress
+2024-01-12 10:25:15 [ERROR] 192.168.1.200 - Root privilege escalation attempt
+2024-01-12 10:25:30 [WARN] 192.168.1.200 - Suspicious file access: /etc/shadow
+2024-01-12 10:25:45 [INFO] 10.0.0.150 - API request completed successfully
+2024-01-12 10:26:00 [ERROR] 203.0.113.45 - Failed login: user=root
+2024-01-12 10:26:15 [CRITICAL] 198.51.100.23 - SQL Injection detected: UNION SELECT NULL
+2024-01-12 10:26:30 [INFO] Server health check: OK
+2024-01-12 10:26:45 [ERROR] 203.0.113.45 - Brute force attack detected
+2024-01-12 10:27:00 [CRITICAL] 198.51.100.88 - Malware: trojan horse detected
+2024-01-12 10:27:15 [WARN] 192.168.1.150 - Port scanning: multiple ports probed
+2024-01-12 10:27:30 [INFO] 10.0.0.175 - Normal operation
+2024-01-12 10:27:45 [ERROR] 192.168.1.200 - Unauthorized access: user: root
+2024-01-12 10:28:00 [CRITICAL] High severity security event logged

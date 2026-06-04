@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Testing API Endpoints</h1>
+    <button onclick="testSimpleMode()">Test Simple Mode</button>
+    <button onclick="testAIMode()">Test AI Mode (needs file)</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function testSimpleMode() {
+            const output = document.getElementById('output');
+            output.textContent = 'Testing /api/explain-logs...\n';
+            
+            try {
+                const response = await fetch('/api/explain-logs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        logs: '192.168.1.100 - - [15/Jan/2024:10:23:45 +0000] "GET /admin/config.php HTTP/1.1" 404 512 "-" "Mozilla/5.0"' 
+                    })
+                });
+                
+                const data = await response.json();
+                output.textContent += 'Success!\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent += 'Error: ' + error.message;
+            }
+        }
+
+        async function testAIMode() {
+            alert('Upload a log file to test AI mode');
+        }
+    </script>
+</body>
+</html>

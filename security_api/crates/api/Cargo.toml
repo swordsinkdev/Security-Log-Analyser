@@ -11,7 +11,6 @@ path = "src/main.rs"
 # Workspace crates
 security-common = { path = "../common" }
 security-analyzer-basic = { path = "../analyzer-basic" }
-security-analyzer-groq = { path = "../analyzer-groq" }
 security-analyzer-llm = { path = "../analyzer-llm" }
 
 # Web framework
@@ -29,6 +28,10 @@ chrono = { workspace = true }
 uuid = { workspace = true }
 dotenv = { workspace = true }
 regex = { workspace = true }
+
+# LLM integration for Simple Mode
+rig-core = { workspace = true }
+reqwest = { workspace = true }
 
 [features]
 default = []
